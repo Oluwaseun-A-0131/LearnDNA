@@ -1,0 +1,6 @@
+{
+  "name": "LearnDNA",
+  "description": "A personalized learning platform that helps students discover HOW they learn best.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

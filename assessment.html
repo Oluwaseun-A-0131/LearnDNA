@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment - LearnDNA</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .question-card {
+      display: none;
+      opacity: 0;
+      transform: translateX(15px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .question-card.active {
+      display: block;
+      opacity: 1;
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative Background Blobs -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+
+  <header id="app-header">
+    <div class="container nav-container">
+      <a href="/" class="logo" id="logo-anchor">
+        <span class="logo-icon">🧬</span>Learn<span class="logo-accent">DNA</span>
+      </a>
+      
+      <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="nav-menu-container">
+        <ul>
+          <li><a href="/dashboard.html" class="btn btn-outline" style="padding: 0.5rem 1.2rem; display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="arrow-left" style="width: 1rem; height: 1rem;"></i>Back to Workspace</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="max-width: 720px; margin-top: 3.5rem; margin-bottom: 6rem;">
+    <!-- Loading overlay for analysis -->
+    <div id="analysis-card" class="card card-accent-primary" style="display: none; text-align: center; padding: 5.5rem 2.5rem; margin-bottom: 2rem; box-shadow: var(--shadow-lg);">
+      <span style="font-size: 4.5rem; display: inline-block; margin-bottom: 1.5rem; animation: logoFloat 3s ease-in-out infinite;">🧬</span>
+      <h2 style="font-size: 2.25rem; font-weight: 850; margin-bottom: 1rem; color: var(--text-primary); letter-spacing: -0.04em;">Analyzing Your Learning DNA...</h2>
+      <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 2.5rem auto; font-size: 1.15rem; line-height: 1.7; font-weight: 500;">
+        Synthesizing your cognitive triggers, study catalysts, sensory channels, and personalized learning secrets...
+      </p>
+      
+      <div class="progress-bar-container" style="max-width: 420px; margin: 0 auto 1.25rem auto; height: 0.85rem; border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div id="loader-progress-bar" class="progress-bar" style="width: 0%; background: var(--gradient-primary); transition: width 0.1s linear;"></div>
+      </div>
+      <div id="loader-percentage" style="font-size: 1.1rem; font-weight: 850; color: var(--brand-primary); font-family: var(--font-mono);">0%</div>
+    </div>
+
+    <!-- Active Assessment Container -->
+    <div id="assessment-card" class="card card-accent-primary anim-slide-up" style="box-shadow: var(--shadow-lg); padding: 3rem 2.5rem;">
+      
+      <!-- Top dynamic progress bar -->
+      <div class="progress-bar-container" style="height: 0.45rem; margin-bottom: 2.25rem; background-color: var(--border-color); border-radius: 10rem;">
+        <div id="assessment-main-progress-bar" style="height: 100%; width: 6.25%; background: var(--gradient-primary); border-radius: 10rem; transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; border-bottom: 1.5px solid var(--border-color); padding-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+        <h3 id="progress-text" style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="help-circle" style="width: 1.1rem; height: 1.1rem; color: var(--brand-primary);"></i>
+          <span>Question 1 of 16</span>
+        </h3>
+        <span id="category-badge" class="badge badge-primary" style="font-size: 0.8rem; padding: 0.4rem 1.1rem; border: 1px solid rgba(99, 102, 241, 0.15);">How You Learn Best</span>
+      </div>
+
+      <!-- Assessment Form / Interface -->
+      <form id="assessment-form">
+        <div id="questions-container">
+          <!-- Dynamic Question Cards will be injected here -->
+        </div>
+
+        <div class="progress-dots" id="dots-container">
+          <!-- Dynamic Dots will be injected here -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 2.5rem; border-top: 1.5px solid var(--border-color); padding-top: 2rem;">
+          <button type="button" id="prev-btn" class="btn btn-outline btn-scale" style="visibility: hidden; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+            <i data-lucide="arrow-left" style="width: 1rem; height: 1rem;"></i> Previous
+          </button>
+          <button type="button" id="next-btn" class="btn btn-primary btn-scale" disabled style="font-weight: 800; padding: 0.8rem 2.25rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>Next</span> <i data-lucide="arrow-right" style="width: 1rem; height: 1rem;"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer id="app-footer">
+    <div class="container">
+      <p>&copy; 2026 LearnDNA - National ICT Olympiad Champion MVP. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { auth, db } from "./firebase-config.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const questions = [
+      // 1. Learning Preference (Sensory preference: V, A, K, R)
+      {
+        id: 1,
+        category: "How You Learn Best",
+        question: "Your teacher is introducing a new topic in class. What is the first thing that helps you start understanding it?",
+        options: [
+          { text: "Looking at drawings, colorful diagrams, or maps on the blackboard", dimension: "V", value: "Visual" },
+          { text: "Listening carefully to the teacher's voice and explanations", dimension: "A", value: "Auditory" },
+          { text: "Doing a small class activity, practical, or writing examples down yourself", dimension: "K", value: "Kinaesthetic" },
+          { text: "Reading the definitions and explanations in your textbook", dimension: "R", value: "Read/Write" }
+        ]
+      },
+      {
+        id: 2,
+        category: "How You Learn Best",
+        question: "When you are preparing for an important exam like WAEC or JAMB, how do you prefer to study a difficult topic?",
+        options: [
+          { text: "Watching a video lesson or looking at charts and tables", dimension: "V", value: "Visual" },
+          { text: "Discussing the topic out loud with a friend or listening to a voice note", dimension: "A", value: "Auditory" },
+          { text: "Answering practice questions or writing formulas repeatedly on a piece of paper", dimension: "K", value: "Kinaesthetic" },
+          { text: "Reading the summary notes and writing out key definitions in your notebook", dimension: "R", value: "Read/Write" }
+        ]
+      },
+      {
+        id: 3,
+        category: "How You Learn Best",
+        question: "During a practical class (like Agric, Fine Art, Home Economics, or Science), how do you prefer to learn how to use a new tool or method?",
+        options: [
+          { text: "Watching the teacher carefully demonstrate how to do it step-by-step", dimension: "V", value: "Visual" },
+          { text: "Listening to the teacher explain the guidelines and rules out loud", dimension: "A", value: "Auditory" },
+          { text: "Holding the tool and trying to practice with it yourself immediately", dimension: "K", value: "Kinaesthetic" },
+          { text: "Reading the instruction sheet or laboratory manual before starting", dimension: "R", value: "Read/Write" }
+        ]
+      },
+      {
+        id: 4,
+        category: "How You Learn Best",
+        question: "You need to memorize a list of terms, dates, or definitions for a test next week. What is your go-to method?",
+        options: [
+          { text: "Creating a colorful mind map or highlighting different parts with markers", dimension: "V", value: "Visual" },
+          { text: "Repeating them out loud to yourself or making a rhythm out of them", dimension: "A", value: "Auditory" },
+          { text: "Using physical flashcards that you can touch, mix, and separate into piles", dimension: "K", value: "Kinaesthetic" },
+          { text: "Writing the list down repeatedly and reading it silently in your room", dimension: "R", value: "Read/Write" }
+        ]
+      },
+
+      // 2. Focus Style
+      {
+        id: 5,
+        category: "Your Ideal Study Environment",
+        question: "You have a major school assignment to submit tomorrow. How do you prefer to tackle it?",
+        options: [
+          { text: "Sitting alone at a quiet desk with a clear list of steps to follow", dimension: "S", value: "Structured/Linear" },
+          { text: "Working with a classmate so you can share ideas and support each other", dimension: "C", value: "Collaborative/Active" },
+          { text: "Taking breaks, listening to music, and working on different parts as you feel like", dimension: "F", value: "Fluid/Adaptable" },
+          { text: "Going into a silent room and focusing deeply on it for hours without any breaks", dimension: "D", value: "Deep Concentrator" }
+        ]
+      },
+      {
+        id: 6,
+        category: "Your Ideal Study Environment",
+        question: "When exams are fast approaching, how do you organize your study time?",
+        options: [
+          { text: "Sticking strictly to a timetable that allocates exact hours for each subject", dimension: "S", value: "Structured/Linear" },
+          { text: "Joining a study group to quiz each other and discuss past questions together", dimension: "C", value: "Collaborative/Active" },
+          { text: "Deciding what subject to read on the spot depending on your mood and interest", dimension: "F", value: "Fluid/Adaptable" },
+          { text: "Locking yourself in your room and reading a single subject for the entire day", dimension: "D", value: "Deep Concentrator" }
+        ]
+      },
+      {
+        id: 7,
+        category: "Your Ideal Study Environment",
+        question: "When you come across a very hard question while practicing past exam papers, what do you do?",
+        options: [
+          { text: "Break it down into small parts and solve it step-by-step using formulas", dimension: "S", value: "Structured/Linear" },
+          { text: "Ask a classmate, a teacher, or a senior student to help explain it to you", dimension: "C", value: "Collaborative/Active" },
+          { text: "Skip it to solve easier ones first, then return to it later with a fresh mind", dimension: "F", value: "Fluid/Adaptable" },
+          { text: "Refuse to give up and focus intensely on that one question until you get it right", dimension: "D", value: "Deep Concentrator" }
+        ]
+      },
+      {
+        id: 8,
+        category: "Your Ideal Study Environment",
+        question: "What kind of study environment helps you concentrate the most?",
+        options: [
+          { text: "A clean, organized desk with your textbooks, notebooks, and a timer ready", dimension: "S", value: "Structured/Linear" },
+          { text: "A lively classroom or library where other students are also active and studying", dimension: "C", value: "Collaborative/Active" },
+          { text: "A comfortable spot on your bed or couch where you can relax while studying", dimension: "F", value: "Fluid/Adaptable" },
+          { text: "A completely quiet, isolated corner of the house with zero noise and distraction", dimension: "D", value: "Deep Concentrator" }
+        ]
+      },
+
+      // 3. Retention Style
+      {
+        id: 9,
+        category: "How You Solve Problems",
+        question: "When you try to remember a math formula or a biology diagram a week after learning it, what comes to your mind first?",
+        options: [
+          { text: "The logical steps and rules showing how the formula works", dimension: "L", value: "Analytical/Logical" },
+          { text: "The big-picture concept and how it relates to real-world examples", dimension: "G", value: "Conceptual/Global" },
+          { text: "Exactly what the page looked like, including the drawings or colored ink", dimension: "P", value: "Association/Spatial" },
+          { text: "The exact sentence, definition, or words you repeated to memorize it", dimension: "R", value: "Rote/Repetition" }
+        ]
+      },
+      {
+        id: 10,
+        category: "How You Solve Problems",
+        question: "If you are practicing 50 past questions for WAEC or JAMB, how do you make sure you remember the answers?",
+        options: [
+          { text: "Grouping the questions by topic and understanding the underlying mathematical logic", dimension: "L", value: "Analytical/Logical" },
+          { text: "Connecting the questions to interesting stories, real life, or simple analogies", dimension: "G", value: "Conceptual/Global" },
+          { text: "Drawing mind maps or connecting the questions to specific sections of your syllabus", dimension: "P", value: "Association/Spatial" },
+          { text: "Going through the questions repeatedly until the correct options become second nature", dimension: "R", value: "Rote/Repetition" }
+        ]
+      },
+      {
+        id: 11,
+        category: "How You Solve Problems",
+        question: "When you are introduced to a new concept in class (like supply and demand in Economics, or photosynthesis in Biology), how do you make sense of it?",
+        options: [
+          { text: "Creating a structured list of causes, effects, and rules in your book", dimension: "L", value: "Analytical/Logical" },
+          { text: "Comparing it to an everyday life scenario (like buying items at a local market)", dimension: "G", value: "Conceptual/Global" },
+          { text: "Drawing a diagram or a visual chart that connects all the different parts", dimension: "P", value: "Association/Spatial" },
+          { text: "Reading the official syllabus definition and memorizing it word-for-word", dimension: "R", value: "Rote/Repetition" }
+        ]
+      },
+      {
+        id: 12,
+        category: "How You Solve Problems",
+        question: "Imagine you are in an exam hall and you get stuck on a difficult theory question. How do you try to remember the answer?",
+        options: [
+          { text: "Reasoning it out logically by connecting it to simple formulas or rules", dimension: "L", value: "Analytical/Logical" },
+          { text: "Recalling the broad story, analogy, or real-life example the teacher used in class", dimension: "G", value: "Conceptual/Global" },
+          { text: "Picturing exactly where that note was written in your notebook or textbook page", dimension: "P", value: "Association/Spatial" },
+          { text: "Remembering the exact wording of the definition you memorized off-by-heart", dimension: "R", value: "Rote/Repetition" }
+        ]
+      },
+
+      // 4. Career Interest
+      {
+        id: 13,
+        category: "Career Interest",
+        question: "If your school is participating in a national competition, what kind of project would you enjoy working on the most?",
+        options: [
+          { text: "Conducting a science experiment, building a model, or analyzing data", dimension: "T", value: "STEM/Technology" },
+          { text: "Creating a business plan, managing the team budget, and presenting the pitch", dimension: "B", value: "Business/Leadership" },
+          { text: "Designing posters, drawing artwork, writing scripts, or editing music", dimension: "C", value: "Arts/Creative" },
+          { text: "Organizing a community project to help people or teach children", dimension: "H", value: "Social/Humanities" }
+        ]
+      },
+      {
+        id: 14,
+        category: "Career Interest",
+        question: "If you could pick one extra skill to learn after school or during the holidays, which one would you choose?",
+        options: [
+          { text: "Computer coding, mechanical repairs, or science laboratory techniques", dimension: "T", value: "STEM/Technology" },
+          { text: "Public speaking, business marketing, or how to manage a business", dimension: "B", value: "Business/Leadership" },
+          { text: "Graphic design, painting, fashion design, catering, or music production", dimension: "C", value: "Arts/Creative" },
+          { text: "Counseling, public health, history, teaching, or foreign languages", dimension: "H", value: "Social/Humanities" }
+        ]
+      },
+      {
+        id: 15,
+        category: "Career Interest",
+        question: "When working in a school group, what role do you naturally find yourself playing?",
+        options: [
+          { text: "The researcher who loves finding facts, solving math, or handling technical details", dimension: "T", value: "STEM/Technology" },
+          { text: "The leader who coordinates who does what, manages time, and speaks for the group", dimension: "B", value: "Business/Leadership" },
+          { text: "The designer who makes the presentation look creative, neat, and highly attractive", dimension: "C", value: "Arts/Creative" },
+          { text: "The helper who keeps everyone happy, resolves arguments, and supports members", dimension: "H", value: "Social/Humanities" }
+        ]
+      },
+      {
+        id: 16,
+        category: "Career Interest",
+        question: "Which of these major challenges would you be most excited to help solve in the future?",
+        options: [
+          { text: "Developing solar power networks, medical equipment, or engineering tools", dimension: "T", value: "STEM/Technology" },
+          { text: "Setting up small business loans, creating new jobs, and improving commerce", dimension: "B", value: "Business/Leadership" },
+          { text: "Creating movies, books, music, video games, or architectural designs", dimension: "C", value: "Arts/Creative" },
+          { text: "Improving school teaching quality, clinic healthcare, or helping less privileged kids", dimension: "H", value: "Social/Humanities" }
+        ]
+      }
+    ];
+
+    let currentStep = 1;
+    const totalSteps = questions.length;
+    const selections = {};
+    let currentUser = null;
+
+    const questionsContainer = document.getElementById("questions-container");
+    const dotsContainer = document.getElementById("dots-container");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const progressText = document.getElementById("progress-text");
+    const categoryBadge = document.getElementById("category-badge");
+    const assessmentCard = document.getElementById("assessment-card");
+    const analysisCard = document.getElementById("analysis-card");
+    const loaderProgressBar = document.getElementById("loader-progress-bar");
+    const loaderPercentage = document.getElementById("loader-percentage");
+    const mobileNavToggle = document.getElementById("mobile-nav-toggle");
+    const navMenuContainer = document.getElementById("nav-menu-container");
+    const mainProgressBar = document.getElementById("assessment-main-progress-bar");
+
+    // Initialize Hamburger Toggle
+    if (mobileNavToggle && navMenuContainer) {
+      mobileNavToggle.addEventListener("click", () => {
+        mobileNavToggle.classList.toggle("open");
+        navMenuContainer.classList.toggle("active");
+      });
+    }
+
+    // Authenticate first
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "/login.html";
+      } else {
+        currentUser = user;
+        initAssessment();
+      }
+    });
+
+    function initAssessment() {
+      // 1. Generate questions HTML
+      questionsContainer.innerHTML = questions.map((q, idx) => {
+        return `
+          <div class="question-card ${idx === 0 ? 'active' : ''}" id="card-q-${q.id}" data-question-index="${q.id}">
+            <h2 style="font-size: 1.45rem; font-weight: 850; margin-bottom: 2rem; color: var(--text-primary); line-height: 1.5; letter-spacing: -0.03em;">${q.question}</h2>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              ${q.options.map((opt, idxOpt) => `
+                <button type="button" class="option-button" data-dimension="${opt.dimension}" data-value="${opt.value}">
+                  <span class="option-letter">${String.fromCharCode(65 + idxOpt)}</span>
+                  <span>${opt.text}</span>
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // 2. Generate progress dots HTML
+      dotsContainer.innerHTML = questions.map((_, idx) => {
+        return `<div class="dot ${idx === 0 ? 'active' : ''}" id="dot-${idx + 1}"></div>`;
+      }).join("");
+
+      // 3. Set up event listeners for options
+      document.querySelectorAll(".option-button").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const btn = e.target.closest(".option-button");
+          if (!btn) return;
+
+          const card = btn.closest(".question-card");
+          const step = parseInt(card.dataset.questionIndex);
+          
+          // Deselect others in this card
+          card.querySelectorAll(".option-button").forEach(b => b.classList.remove("selected"));
+          
+          // Select this button
+          btn.classList.add("selected");
+          
+          // Save selection
+          selections[step] = {
+            dimension: btn.dataset.dimension,
+            value: btn.dataset.value,
+            text: btn.querySelector("span:not(.option-letter)").textContent.trim()
+          };
+          
+          // Mark dot as completed
+          const dot = document.getElementById(`dot-${step}`);
+          if (dot) dot.classList.add("completed");
+
+          // Enable next button
+          nextBtn.disabled = false;
+        });
+      });
+
+      updateUI();
+    }
+
+    function updateUI() {
+      // Toggle active classes on question cards
+      document.querySelectorAll(".question-card").forEach((card, idx) => {
+        card.classList.toggle("active", idx + 1 === currentStep);
+      });
+
+      // Update progress dots
+      document.querySelectorAll(".dot").forEach((dot, idx) => {
+        dot.classList.toggle("active", idx + 1 === currentStep);
+      });
+
+      // Update upper horizontal progress bar
+      if (mainProgressBar) {
+        mainProgressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+      }
+
+      // Show/hide previous button
+      prevBtn.style.visibility = currentStep === 1 ? "hidden" : "visible";
+      
+      // Toggle state of next button based on selection for this step
+      const currentSelected = selections[currentStep];
+      nextBtn.disabled = !currentSelected;
+
+      // Update button label on the final question
+      if (currentStep === totalSteps) {
+        nextBtn.innerHTML = `<span>Submit & Analyze</span> <i data-lucide="sparkles" style="width: 1.15rem; height: 1.15rem;"></i>`;
+      } else {
+        nextBtn.innerHTML = `<span>Next</span> <i data-lucide="arrow-right" style="width: 1.15rem; height: 1.15rem;"></i>`;
+      }
+
+      // Update helper headers
+      const currentQ = questions[currentStep - 1];
+      progressText.innerHTML = `
+        <i data-lucide="help-circle" style="width: 1.1rem; height: 1.1rem; color: var(--brand-primary);"></i>
+        <span>Question ${currentStep} of ${totalSteps}</span>
+      `;
+      categoryBadge.textContent = currentQ.category;
+
+      if (window.lucide) { window.lucide.createIcons(); }
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateUI();
+      }
+    });
+
+    nextBtn.addEventListener("click", async () => {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateUI();
+      } else {
+        // Complete! Trigger dynamic calculation and save to Firestore
+        await handleSubmit();
+      }
+    });
+
+    async function handleSubmit() {
+      if (!currentUser) return;
+
+      // Hide active form and show beautiful analyzing screen
+      assessmentCard.style.display = "none";
+      analysisCard.style.display = "block";
+
+      // Animated Progress Bar (2 seconds total)
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 5;
+        if (progress > 100) progress = 100;
+        loaderProgressBar.style.width = `${progress}%`;
+        loaderPercentage.textContent = `${progress}%`;
+        if (progress >= 100) {
+          clearInterval(interval);
+        }
+      }, 90);
+
+      try {
+        // 1. Calculate Results Dimensions
+        
+        // Dimension A: Learning Preference (Q1 to Q4: V, A, K, R)
+        const sensoryCounts = { V: 0, A: 0, K: 0, R: 0 };
+        for (let qNum = 1; qNum <= 4; qNum++) {
+          const sel = selections[qNum];
+          if (sel) sensoryCounts[sel.dimension]++;
+        }
+        // Determine primary sensory key
+        let primarySensoryKey = "V";
+        let maxSensoryCount = -1;
+        for (const k in sensoryCounts) {
+          if (sensoryCounts[k] > maxSensoryCount) {
+            maxSensoryCount = sensoryCounts[k];
+            primarySensoryKey = k;
+          }
+        }
+        const sensoryPct = Math.round((maxSensoryCount / 4) * 100);
+        const sensoryLabels = {
+          V: "Visual Preference",
+          A: "Auditory Preference",
+          K: "Kinesthetic Preference",
+          R: "Read/Write Preference"
+        };
+
+        // Dimension B: Focus Catalyst (Q5 to Q8: S, C, F, D)
+        let structuredDeep = 0;
+        let collabFluid = 0;
+        for (let qNum = 5; qNum <= 8; qNum++) {
+          const sel = selections[qNum];
+          if (sel) {
+            if (sel.dimension === "S" || sel.dimension === "D") structuredDeep++;
+            else collabFluid++;
+          }
+        }
+        let envLabel = "Silent Study";
+        let envVal = 75;
+        if (collabFluid > structuredDeep) {
+          envLabel = "Collaborative / Active";
+          envVal = Math.round((collabFluid / 4) * 100);
+        } else {
+          envLabel = "Silent Study";
+          envVal = Math.round((structuredDeep / 4) * 100);
+        }
+
+        // Dimension C: Cognitive Intake (Q9 to Q12: L, G, P, R)
+        let logicalRote = 0;
+        let globalSpatial = 0;
+        for (let qNum = 9; qNum <= 12; qNum++) {
+          const sel = selections[qNum];
+          if (sel) {
+            if (sel.dimension === "L" || sel.dimension === "R") logicalRote++;
+            else globalSpatial++;
+          }
+        }
+        let cognitiveLabel = "Sequential / Analytical";
+        let cognitiveVal = 65;
+        if (globalSpatial > logicalRote) {
+          cognitiveLabel = "Global / Conceptual";
+          cognitiveVal = Math.round((globalSpatial / 4) * 100);
+        } else {
+          cognitiveLabel = "Sequential / Analytical";
+          cognitiveVal = Math.round((logicalRote / 4) * 100);
+        }
+
+        // Dimension D: Career Interest (Q13 to Q16: T, B, C, H)
+        const careerCounts = { T: 0, B: 0, C: 0, H: 0 };
+        for (let qNum = 13; qNum <= 16; qNum++) {
+          const sel = selections[qNum];
+          if (sel) careerCounts[sel.dimension]++;
+        }
+        let primaryCareerKey = "T";
+        let maxCareerCount = -1;
+        for (const k in careerCounts) {
+          if (careerCounts[k] > maxCareerCount) {
+            maxCareerCount = careerCounts[k];
+            primaryCareerKey = k;
+          }
+        }
+        const careerLabels = {
+          T: "STEM & Technology",
+          B: "Business & Leadership",
+          C: "Arts & Creative Design",
+          H: "Social Work & Humanities"
+        };
+        const careerAlignment = careerLabels[primaryCareerKey];
+
+        // 2. Generate Archetype Details
+        let dominantStyle = "Dynamic Visualizer";
+        let styleShortDesc = "You absorb and retain information best when it is presented in visual formats like diagrams, videos, flowcharts, and mind maps.";
+        let studySecrets = [
+          "Use colorful mind maps and structured flowcharts to connect complex, heavy topics.",
+          "Color-code your handwritten notes (e.g., green for formulas, blue for definitions).",
+          "Watch visual tutorial animations or YouTube science clips before reading dense textbook chapters."
+        ];
+
+        if (primarySensoryKey === "A") {
+          dominantStyle = "Acoustic Synthesizer";
+          styleShortDesc = "You process, understand, and recall ideas best through the spoken word and acoustic patterns. Listening, debating, and verbalizing are your core keys.";
+          studySecrets = [
+            "Record your core summaries as voice notes on your phone and listen to them on your way to school.",
+            "Discuss tricky exam past questions with a study partner or explain difficult topics out loud to an empty room.",
+            "Create rhythmic acronym phrases and sound mnemonics to lock in difficult WAEC definitions."
+          ];
+        } else if (primarySensoryKey === "K") {
+          dominantStyle = "Tactile Creator";
+          styleShortDesc = "You absorb information by physical interaction and active doing. Practice past papers, mock exams, and practical labs are your absolute superpower.";
+          studySecrets = [
+            "Construct physical paper flashcards and physically sort them into 'Mastered' vs 'To Review' piles.",
+            "Walk around your study room or use hand gestures while reciting complex points to lock in muscle memory.",
+            "Jump straight into solving past practice questions to translate textbook theory into instant practical understanding."
+          ];
+        } else if (primarySensoryKey === "R") {
+          dominantStyle = "Textual Scholar";
+          styleShortDesc = "You have a powerful verbal-linguistic affinity. Reading text summaries, building structured tables, and compiling written notebooks are how you learn best.";
+          studySecrets = [
+            "Write and rewrite brief study guides and bullet points using your own relatable words.",
+            "Translate visual charts and graphs back into structured checklists or descriptive paragraphs.",
+            "Collect past syllabus summaries and condense them into your own miniature 'cheat-sheet' reference book."
+          ];
+        }
+
+        // Prepare document payload
+        const assessmentResult = {
+          completedAt: new Date().toISOString(),
+          dominantStyle,
+          styleShortDesc,
+          sensoryLabel: sensoryLabels[primarySensoryKey],
+          sensoryValue: sensoryPct,
+          envLabel,
+          envValue: envVal,
+          cognitiveLabel,
+          cognitiveValue: cognitiveVal,
+          careerAlignment,
+          studySecrets,
+          rawSelections: selections
+        };
+
+        // 3. Write results to Firestore and wait (Using setDoc with merge for reliability)
+        const userDocRef = doc(db, "users", currentUser.uid);
+        await setDoc(userDocRef, {
+          assessmentResult
+        }, { merge: true });
+
+        // Wait for the remaining progress duration to complete 2 seconds seamlessly
+        setTimeout(() => {
+          // Set session storage flag to trigger confetti on results page!
+          sessionStorage.setItem("just_completed_assessment", "true");
+          window.location.href = "/results.html";
+        }, 2000);
+
+      } catch (error) {
+        console.error("Firestore write failed:", error);
+        alert(`An error occurred while saving your results: ${error.message || error}`);
+        // Reset state
+        clearInterval(interval);
+        analysisCard.style.display = "none";
+        assessmentCard.style.display = "block";
+      }
+    }
+
+    // Initialize Lucide Icons
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

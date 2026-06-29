@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - LearnDNA</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Decorative Background Blobs -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+
+  <header id="app-header">
+    <div class="container nav-container">
+      <a href="/" class="logo" id="logo-anchor">
+        <span class="logo-icon">🧬</span>Learn<span class="logo-accent">DNA</span>
+      </a>
+      
+      <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="nav-menu-container">
+        <ul>
+          <li><a href="/"><i data-lucide="home" style="width: 1.1rem; height: 1.1rem;"></i>Home</a></li>
+          <li><a href="/register.html" class="btn btn-outline" style="padding: 0.5rem 1.2rem; display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="user-plus" style="width: 1rem; height: 1rem;"></i>Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 14rem); padding: 2rem 0;">
+    <div class="card form-container anim-slide-up" id="login-card" style="box-shadow: var(--shadow-lg); width: 100%; margin: 0;">
+      <!-- Startup branding logo inside card -->
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <span style="font-size: 2.5rem; display: inline-block; animation: logoFloat 4s ease-in-out infinite;">🧬</span>
+      </div>
+      <h2 style="text-align: center; margin-bottom: 0.5rem; font-size: 2rem; font-weight: 850; letter-spacing: -0.04em;">Welcome Back 👋</h2>
+      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2.25rem; font-size: 0.95rem; font-weight: 500;">Log in to access your customized Learning DNA workspace.</p>
+      
+      <form id="login-form">
+        <div id="error-message" style="display: none; background-color: #fef2f2; border: 1.5px solid #fecaca; color: #b91c1c; padding: 0.95rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; font-size: 0.875rem; font-weight: 600; line-height: 1.4; display: flex; align-items: center; gap: 0.625rem;">
+          <i data-lucide="alert-circle" style="width: 1.2rem; height: 1.2rem; flex-shrink: 0;"></i>
+          <span id="error-text"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="form-control-wrapper">
+            <i data-lucide="mail" class="form-control-icon"></i>
+            <input type="email" id="email" class="form-control" placeholder="yourname@gmail.com" required>
+          </div>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 2.25rem;">
+          <label for="password">Password</label>
+          <div class="form-control-wrapper">
+            <i data-lucide="lock" class="form-control-icon"></i>
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+            <button type="button" class="password-toggle-btn" id="password-toggle" aria-label="Toggle password visibility">
+              <i data-lucide="eye" style="width: 1.15rem; height: 1.15rem;"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn btn-primary btn-scale" style="width: 100%; font-size: 1rem; padding: 0.95rem; font-weight: 800; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <span>Log In</span> <i data-lucide="arrow-right" style="width: 1.15rem; height: 1.15rem;"></i>
+        </button>
+      </form>
+      
+      <div style="text-align: center; margin-top: 2.25rem; font-size: 0.925rem; color: var(--text-secondary); font-weight: 500;">
+        Don't have an account yet? <a href="/register.html" style="color: var(--brand-primary); font-weight: 700; text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottomColor='var(--brand-primary)'" onmouseout="this.style.borderBottomColor='transparent'">Register here</a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="app-footer">
+    <div class="container">
+      <p>&copy; 2026 LearnDNA - National ICT Olympiad Champion MVP. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { auth } from "./firebase-config.js";
+    import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const loginForm = document.getElementById("login-form");
+    const submitBtn = document.getElementById("submit-btn");
+    const errorMessage = document.getElementById("error-message");
+    const errorText = document.getElementById("error-text");
+    const mobileNavToggle = document.getElementById("mobile-nav-toggle");
+    const navMenuContainer = document.getElementById("nav-menu-container");
+    const passwordInput = document.getElementById("password");
+    const passwordToggle = document.getElementById("password-toggle");
+
+    // Initialize Hamburger Toggle
+    if (mobileNavToggle && navMenuContainer) {
+      mobileNavToggle.addEventListener("click", () => {
+        mobileNavToggle.classList.toggle("open");
+        navMenuContainer.classList.toggle("active");
+      });
+    }
+
+    // Toggle Password Visibility
+    if (passwordToggle && passwordInput) {
+      passwordToggle.addEventListener("click", () => {
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          passwordToggle.innerHTML = `<i data-lucide="eye-off" style="width: 1.15rem; height: 1.15rem;"></i>`;
+        } else {
+          passwordInput.type = "password";
+          passwordToggle.innerHTML = `<i data-lucide="eye" style="width: 1.15rem; height: 1.15rem;"></i>`;
+        }
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      });
+    }
+
+    // Redirect already logged in user
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "/dashboard.html";
+      }
+    });
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      errorMessage.style.display = "none";
+      errorText.textContent = "";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        errorText.textContent = "Please fill in all fields.";
+        errorMessage.style.display = "flex";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader" style="width: 1.15rem; height: 1.15rem; animation: spin 2s linear infinite;"></i> Signing you in...`;
+      if (window.lucide) { window.lucide.createIcons(); }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "/dashboard.html";
+      } catch (error) {
+        console.error("Login error:", error);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Log In</span> <i data-lucide="arrow-right" style="width: 1.15rem; height: 1.15rem;"></i>`;
+        if (window.lucide) { window.lucide.createIcons(); }
+
+        // Friendly validation messages
+        let message = "Incorrect email address or password. Please check your credentials and try again.";
+        if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") {
+          message = "Incorrect email address or password. Please check your credentials and try again.";
+        } else if (error.code === "auth/invalid-email") {
+          message = "Please enter a valid email address.";
+        } else if (error.message) {
+          message = error.message;
+        }
+
+        errorText.textContent = message;
+        errorMessage.style.display = "flex";
+      }
+    });
+
+    // Initialize Lucide Icons
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

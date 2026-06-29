@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LearnDNA - Discover HOW You Learn Best</title>
+  <link rel="stylesheet" href="/style.css">
+  <!-- Load Lucide Icons from CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Decorative Background Blobs -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+
+  <header id="app-header">
+    <div class="container nav-container" id="nav-container">
+      <a href="/" class="logo" id="logo-anchor">
+        <span class="logo-icon">🧬</span>Learn<span class="logo-accent">DNA</span>
+      </a>
+      
+      <!-- Responsive Mobile Toggle -->
+      <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="nav-menu-container">
+        <ul id="nav-menu">
+          <li><a href="/"><i data-lucide="home" style="width: 1.1rem; height: 1.1rem;"></i>Home</a></li>
+          <li class="nav-loading" style="color: var(--text-secondary); font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i data-lucide="loader" style="width: 1rem; height: 1rem; animation: spin 2s linear infinite;"></i> Loading...
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Premium Two Column Hero Section -->
+    <section class="grid grid-2 hero" style="align-items: center; text-align: left; margin-bottom: 5rem; padding-top: 4rem; max-width: 100%;" id="hero-section">
+      <div class="anim-left" style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div style="display: inline-flex;">
+          <span class="badge badge-primary"><i data-lucide="award"></i> National ICT Olympiad Finalist MVP</span>
+        </div>
+        <h1 style="margin-bottom: 0;">Discover Your <span class="gradient-text">Learning DNA</span></h1>
+        <p style="margin-bottom: 0; font-size: 1.15rem; color: var(--text-secondary); line-height: 1.75;">
+          Every student has a unique learning formula. Discover yours to master WAEC, JAMB, NECO, and NABTEB exams with less stress and maximum retention.
+        </p>
+        <div id="hero-actions" style="display: flex; gap: 1rem; min-height: 4.5rem; align-items: center; flex-wrap: wrap;">
+          <span style="color: var(--text-secondary); font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+            <i data-lucide="loader" style="width: 1rem; height: 1rem; animation: spin 2s linear infinite;"></i> Setting up your portal...
+          </span>
+        </div>
+      </div>
+      
+      <!-- Animated DNA Illustration with Floating Badges Column -->
+      <div class="anim-right premium-dna-illustration-wrapper" style="position: relative;">
+        <div class="premium-dna-illustration">
+          <div class="helix">
+            <!-- 10 Rungs for a complete 3D Orbit Illusion -->
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+            <div class="rung">
+              <div class="dot-node primary-node"></div>
+              <div class="dot-node secondary-node"></div>
+            </div>
+          </div>
+          
+          <!-- floating interactive study cards surrounding the rotating helix -->
+          <div class="floating-asset floating-1">
+            <i data-lucide="book-open" style="color: var(--brand-primary); width: 1.15rem; height: 1.15rem;"></i>
+            <span>Visual study tips</span>
+          </div>
+          <div class="floating-asset floating-2">
+            <i data-lucide="lightbulb" style="color: var(--brand-warning); width: 1.15rem; height: 1.15rem;"></i>
+            <span>Retention hacks</span>
+          </div>
+          <div class="floating-asset floating-3">
+            <i data-lucide="graduation-cap" style="color: var(--brand-secondary); width: 1.15rem; height: 1.15rem;"></i>
+            <span>JAMB & WAEC Focus</span>
+          </div>
+          <div class="floating-asset floating-4">
+            <i data-lucide="brain-circuit" style="color: var(--brand-accent); width: 1.15rem; height: 1.15rem;"></i>
+            <span>Problem solving</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it Works Section with Premium Lift Cards -->
+    <section style="margin-bottom: 7rem;" id="features-section">
+      <div style="text-align: center; max-width: 650px; margin: 0 auto 4rem auto;">
+        <span class="badge badge-secondary" style="margin-bottom: 1rem;"><i data-lucide="settings"></i> System Blueprint</span>
+        <h2 style="font-size: 2.25rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 1rem;">How LearnDNA Works</h2>
+        <p style="color: var(--text-secondary);">Empowering candidates with three simple milestones to shift from cramming to genuine understanding.</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card card-accent-primary hover-lift" id="feature-card-1">
+          <div style="background: rgba(99, 102, 241, 0.1); width: 3.5rem; height: 3.5rem; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+            <i data-lucide="clipboard-list" style="color: var(--brand-primary); width: 1.75rem; height: 1.75rem;"></i>
+          </div>
+          <h3 style="color: var(--text-primary); margin-bottom: 0.75rem; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">1. Complete Assessment</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Answer simple, relatable questions based on everyday Nigerian secondary school experiences like classroom settings, practical tests, and exams.</p>
+        </div>
+        <div class="card card-accent-secondary hover-lift" id="feature-card-2">
+          <div style="background: rgba(14, 165, 233, 0.1); width: 3.5rem; height: 3.5rem; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+            <i data-lucide="sparkles" style="color: var(--brand-secondary); width: 1.75rem; height: 1.75rem;"></i>
+          </div>
+          <h3 style="color: var(--text-primary); margin-bottom: 0.75rem; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">2. Generate DNA Profile</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Receive a highly personalized visual dashboard mapping sensory preferences, environmental catalysts, and problem-solving shortcuts.</p>
+        </div>
+        <div class="card card-accent-warning hover-lift" id="feature-card-3">
+          <div style="background: rgba(245, 158, 11, 0.1); width: 3.5rem; height: 3.5rem; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+            <i data-lucide="trophy" style="color: var(--brand-warning); width: 1.75rem; height: 1.75rem;"></i>
+          </div>
+          <h3 style="color: var(--text-primary); margin-bottom: 0.75rem; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">3. Academic Mastery</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Apply study blueprints and recommendations tailored precisely to WAEC syllabus structure, JAMB test-taking, or technical tests.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="app-footer">
+    <div class="container">
+      <p>&copy; 2026 LearnDNA - National ICT Olympiad Champion MVP. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { auth } from "./firebase-config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const navMenu = document.getElementById("nav-menu");
+    const heroActions = document.getElementById("hero-actions");
+    const mobileNavToggle = document.getElementById("mobile-nav-toggle");
+    const navMenuContainer = document.getElementById("nav-menu-container");
+
+    // Initialize Hamburger Toggle
+    if (mobileNavToggle && navMenuContainer) {
+      mobileNavToggle.addEventListener("click", () => {
+        mobileNavToggle.classList.toggle("open");
+        navMenuContainer.classList.toggle("active");
+      });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in
+        navMenu.innerHTML = `
+          <li><a href="/"><i data-lucide="home" style="width: 1.1rem; height: 1.1rem;"></i>Home</a></li>
+          <li><a href="/dashboard.html"><i data-lucide="layout-dashboard" style="width: 1.1rem; height: 1.1rem;"></i>Dashboard</a></li>
+          <li><button id="nav-logout-btn" class="btn btn-outline" style="padding: 0.5rem 1.2rem; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="log-out" style="width: 1rem; height: 1rem;"></i>Logout</button></li>
+        `;
+        
+        heroActions.innerHTML = `
+          <a href="/dashboard.html" class="btn btn-primary btn-lg btn-scale" style="font-weight: 800;"><i data-lucide="layout-dashboard"></i> Access Your Workspace</a>
+        `;
+
+        const logoutBtn = document.getElementById("nav-logout-btn");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", async () => {
+            try {
+              await signOut(auth);
+              window.location.reload();
+            } catch (error) {
+              console.error("Logout failed:", error);
+            }
+          });
+        }
+      } else {
+        // User is logged out
+        navMenu.innerHTML = `
+          <li><a href="/"><i data-lucide="home" style="width: 1.1rem; height: 1.1rem;"></i>Home</a></li>
+          <li><a href="/login.html" class="btn btn-outline" style="display: flex; align-items: center; gap: 0.5rem;"><i data-lucide="log-in" style="width: 1rem; height: 1rem;"></i>Login</a></li>
+          <li><a href="/register.html" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem; color: white;"><i data-lucide="user-plus" style="width: 1rem; height: 1rem;"></i>Register</a></li>
+        `;
+
+        heroActions.innerHTML = `
+          <a href="/register.html" class="btn btn-primary btn-lg btn-scale" style="font-weight: 800;"><i data-lucide="user-plus"></i> Discover Your Learning DNA</a>
+          <a href="/login.html" class="btn btn-outline btn-lg btn-scale" style="font-weight: 800;"><i data-lucide="log-in"></i> Sign In to Workspace</a>
+        `;
+      }
+      
+      // Reinitialize Lucide Icons after dynamic loading
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+
+    // Initialize Lucide Icons immediately for static elements
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
